@@ -10,104 +10,100 @@
       <h2>Stage 0: Getting Started with HTML</h2>
         <div class="subsection">
           <h3>World Wide Web</h3>
-            <p>
-              - HTML = Hypertext Markup Language <br>
-              - Hyperlinks aka links <br>
-              - Any file type can be found on the web <br>
-              - I am going to learn to love HTML.
-            </p>
-          <h3>Emphasizing text with b (bold), em (emphasis aka italics) and u (underline) tags</h3>
-            <p>
-              **<b>Opening Tag</b> <u>then</u> <b>Contents</b> <u>then</u> <b>Closing Tag</b> = <b><em>ELEMENT</em></b><br>
-              HTML is <b>reasonably straightforward</b><br>
-              <em>HTML is <b>reasonably straightforward</b></em>
-            </p>
+            <ol>
+              <li>HTML = Hypertext Markup Language</li>
+              <li>Hyperlinks aka links</li>
+              <li>Any file type can be found on the web</li>
+              <li>I am going to learn to love HTML.</li>
+            </ol>
+          <h3>Emphasizing text</h3>
+            <ol type="A">
+              <li>b (bold), em (emphasis aka italics) and u (underline) tags</li>
+              <li>**<b>Opening Tag</b> <u>then</u> <b>Contents</b> <u>then</u> <b>Closing Tag</b> = <b><em>ELEMENT</em></b></li>
+              <li>HTML is <b>reasonably straightforward</b></li>
+              <li><em>HTML is <b>reasonably straightforward</b></em></li>
+            </ol>
           </div>
         <div class="subsection">
           <h3>Bringing in Links & Images</h3>
-            <p>
-              Tag Attribute - TAG ATTR = "value" contents end tag <br>
-              See code below for adding links<br>
-              Anchor - a - for making links <br>
-              I am going to learn to love <a href="http://www.w3c.org/html">HTML</a><br>
-              This website is <a href="http://www.udacity.com">my favorite</a><br>
-            </p>
-            <p>
-              See code below for adding images <br>
-              images = img src="url" alt="text" <br>
-              hello! <img src="http://www.udacity.com/cs253x/hipmunk.png" alt="hipmunk!"> and here is some more text <br>
-            </p>
+            <ul>
+              <li>Tag Attribute - TAG ATTR = "value" contents end tag</li>
+              <li>See code below for adding links</li>
+              <li>Anchor - a - for making links</li>
+              <li>I am going to learn to love <a href="http://www.w3c.org/html">HTML</a></li>
+              <li>This website is <a href="http://www.udacity.com">my favorite</a></li>
+            </ul>
+            <ul style="list-style-type:circle">
+              <li>See code below for adding images</li>
+              <li>mages = img src="url" alt="text"</li>
+              <li>hello! <img src="http://www.udacity.com/cs253x/hipmunk.png" alt="hipmunk!"> and here is some more text</li>
+            </ul>
         </div>
         <div class="subsection">
           <h3>Breaks, Paragraphs, Inline, Block</h3>
-            <p>
-              Line breaks are a void tag, br, no close needed
-            </p>
-            this text is really
-            <br>
-            <br>
-            too long for one line
-            <p>
-              p tag for paragraphs, not a void tag, need to use a close tag at the end
-            </p>
-            Hello everyone!<br> We're using two lines now!
+            <ul style="list-style-type:square">
+              <li>Line breaks are a void tag, br, no close needed</li>
+              <li>Reviewers of my initial attempt recommended minimizing the use of the br tag</li>
+              <li>ol for ordered lists like 1,2,3 and abc, sub-elements noted with li tag</li>
+              <li>ul for unordered lists with standard bullet points, sub-elements noted with li tag</li>
+              <li>p tag for paragraphs, not a void tag, need to use a close tag at the end</li>
+            </ul>
           <h3>Inline Vs Block</h3>
             <p>br is inline, p is block<br>p tag makes an actual invisible box around text</p>
         </div>
         <div class="subsection">
           <h3>Container Elements</h3>
-          <h4>Span / Div</h4>
-            <p>
-              span is text, inline, not a void tag<br>
-              div is text, block, not a void tag<br>
-            </p>
-              <span>this is one line</span>
-              <div>this is one line</div>.
-              yep, one line<br>
-              Inline <strong>or</strong> block?<br>
-              Inline <form>or</form> block?<br>
-              a, span, br, img, strong are all inline<br>
-              div, p, form are all block<br>
-              <br>
-          <p>
-            HTML documents: !DOCTYPE HTML; html; head; title; head; body;<br>
-            Head contains title, CSS, Java Script, etc<br>
-            Body is the main component of a page<br>
-            Indentation is key for readability, etc in HTML just like Python, but this editor doesn't enforce it the way a Python editor does<br>
-          </p>
+            <h4>Span / Div</h4>
+                span is text, inline, not a void tag<br>
+                div is text, block, not a void tag<br>
+                <span>this is one line</span>
+                <div>this is one line</div>.
+                yep, one line<br>
+                Inline <strong>or</strong> block?<br>
+                Inline <form>or</form> block?<br>
+                a, span, br, img, strong are all inline<br>
+                div, p, form are all block<br>
+            <h4>Core Elements for any page</h4>
+            <ul>
+              <li>HTML documents: !DOCTYPE HTML; html; head; title; head; body;</li>
+              <li>Head contains title, CSS, Java Script, etc</li>
+              <li>Body is the main component of a page</li>
+              <li>Indentation is key for readability, etc in HTML just like Python, but this editor doesn't enforce it the way a Python editor does</li>
+            </ul>
         </div>
     </div>
     <div class="section">
+      <img src="https://innovation.ox.ac.uk/wp-content/uploads/2015/07/stage-1.jpg" alt="Stage 1" height="142" width="420">
       <h2>Stage 1: Make a Web Page</h2>
         <p>
-          Google Chrome - top right - three dot icon, More Tools, Developer Tools to see html code behind a website<br>
-          <br>
-          HTML and CSS are both "languages"<br>
-          HTML controls the "structure" of a web page<br>
-          CSS controls the "style" of a page (how it looks).<br>
-          When programmers talk about the "DOM" (Document Object Model) they are talking about the tree-like structure of a page.<br>
+          Google Chrome - top right - three dot icon, More Tools, Developer Tools to see html code behind a website
         </p>
+        <ol>
+          <li>HTML and CSS are both "languages"</li>
+          <li>HTML controls the "structure" of a web page</li>
+          <li>CSS controls the "style" of a page (how it looks).</li>
+          <li>When programmers talk about the "DOM" (Document Object Model) they are talking about the tree-like structure of a page.</li>
+        </ol>
+        <ul>
+          <li>HTML - HyperText Markup Language - the standard markup language used to create web pages.</li>
+          <li>CSS - Cascading Style Sheets - style sheet language used for describing the look and formatting of a document written in a markup language.</li>
+          <li>DOM - Document Object Model - a cross-platform and language-independent convention for representing and interacting with objects in HTML (and other markup languages). The nodes of every document are organized in a tree structure, called the DOM tree.</li>
+        </ul>
         <p>
-          HTML - HyperText Markup Language - the standard markup language used to create web pages.<br>
-          CSS - Cascading Style Sheets - style sheet language used for describing the look and formatting of a document written in a markup language.<br>
-          DOM - Document Object Model - a cross-platform and language-independent convention for representing and interacting with objects in HTML (and other markup languages). The nodes of every document are organized in a tree structure, called the DOM tree.<br>
-        </p>
-        <p>
-          Boxes everywhere - everything on a webpage is a box - there's also a grid in the background to make sure everything stays aligned<br>
-          Start with the big boxes and work down from there, draw it out
-          <br>
-          div tag to create boxes
+          Boxes everywhere - everything on a webpage is a box - there's also a grid in the background to make sure everything stays aligned.
+          Start with the big boxes and work down from there, draw it out. Use div tag to create boxes
         </p>
           <div class="title">My App</div>
           <div class="app">
             <div class="screenshot">image</div>
             <div class="description">text</div>
           </div>
-          <br>
         <p>
           Also use the div tag to create sections/structure by grouping related content.
           Including divs in an HTML document can also make the code easier to modify in the future.
         </p>
+        <h4>ALWAYS DO THIS</h4>
+          Run the HTML checker at <a href="https://validator.w3.org/nu/#textarea">Nu Html Checker</a>
     </div>
   </body>
 </html>
