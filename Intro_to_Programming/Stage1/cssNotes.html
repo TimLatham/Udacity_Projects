@@ -1,6 +1,5 @@
 <!DOCTYPE html>
-  <!DOCTYPE html>
-  <html>
+  <html lang="en">
     <head>
       <link rel="stylesheet" href="style.css">
       <meta charset="utf-8">
@@ -9,31 +8,56 @@
     <body>
       <div class="section">
         <h2>Cascading Style Sheets (CSS)</h2>
-        <h3>Key Links for CSS</h3>
-        <ul>
-          <li><a href="https://css-tricks.com/how-css-selectors-work/">How CSS Selectors Work</a></li>
-          <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference">CSS Reference</a></li>
-          <li><a href="http://necolas.github.io/normalize.css/">Normalize.css</a></li>
-          <li><a href="https://css-tricks.com/almanac/">CSS Almanac</a></li>
-        </ul>
-        <h3>About CSS</h3>
-        <p>
-          CSS is used to keep the <em>design</em> away from the <em>document</em>.
-          It also allows you to follow the coder credo, <b>"never repeat yourself"</b>.
-          By integrating the use of structures such as div tags and CSS you can easily control formatting
-          across a variety of elements with minimal lines of code/repetition.
-        </p>
-        <p>
-          For example, if you name your div class "section", you can format all div class "section"
-          with "".section {"css code here"}"".  This is called a class selector.
-        </p>
-        <p>
+        <div class="subsection">
+          <h3>Key Links for CSS</h3>
+          <ul>
+            <li><a href="https://css-tricks.com/how-css-selectors-work/">How CSS Selectors Work</a></li>
+            <li><a href="https://developer.mozilla.org/en-US/docs/Web/CSS/Reference">CSS Reference</a></li>
+            <li><a href="http://necolas.github.io/normalize.css/">Normalize.css</a></li>
+            <li><a href="https://css-tricks.com/almanac/">CSS Almanac</a></li>
+            <li><a href="https://css-tricks.com/snippets/css/a-guide-to-flexbox/">Guide to Flexbox</a></li>
+          </ul>
+        </div>
+        <div class="subsection">
+          <h3>About CSS</h3>
+          <p>
+            CSS is used to keep the <em>design</em> away from the <em>document</em>.
+            It also allows you to follow the coder credo, <b>"never repeat yourself"</b>.
+            By integrating the use of structures such as div tags and CSS you can easily control formatting
+            across a variety of elements with minimal lines of code/repetition.
+          </p>
+          <p>
+            For example, if you name your div class "section", you can format all div class "section"
+            with "".section {"css code here"}"".  This is called a class selector.
+          </p>
           <h4>Class Selectors</h4>
-          Class selectors are your friend. They are probably the most useful and versatile selectors
-          out there. In part because they are well supported in all browsers. In part because you
-          can add multiple classes (just separated by a space) on HTML elements. In part because
-          there are JavaScript things you can do specifically for manipulating classes.
-        </p>
+          <p>
+            Class selectors are your friend. They are probably the most useful and versatile selectors
+            out there. In part because they are well supported in all browsers. In part because you
+            can add multiple classes (just separated by a space) on HTML elements. In part because
+            there are JavaScript things you can do specifically for manipulating classes.
+          </p>
+        </div>
+        <div class="subsection">
+          <h3>Boxes</h3>
+          Flexbox is helpful, see link at beginning for more on how this works.
+          <h4>Box Sizing</h4>
+          <ol>
+            <li>HTML elements are boxes and each box has 4 components.</li>
+            <li>Because there are so many components to each box, it can often be hard to get the size of a box just right.</li>
+            <li>There are two techniques you can use to help deal with sizing issues.</li>
+              <ol>
+                <li>Set sizes in terms of percentages rather than pixels.</li>
+                <li>Set the box-sizing attribute to border-box for every element.</li>
+              </ol>
+            <li>Different browsers work slightly differently. Sometimes this causes different browsers to display the same code differently.</li>
+          </ol>
+          <h4>Box Positioning</h4>
+          <ol>
+            <li>Divs are block elements (as opposed to inline), so by default they take up the entire width of a page.</li>
+            <li>Adding the rule display: flex; to the appropriate CSS will override this behavior and let divs appear next to each other.</li>
+          </ol>
+        </div>
       </div>
     </body>
   </html>
