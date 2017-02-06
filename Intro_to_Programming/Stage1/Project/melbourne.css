@@ -1,0 +1,22 @@
+/* css file for Melbourne page */
+.picture {
+  max-width: 100px
+}
+.text {
+  max-width: 450px
+}
+.section {
+  display: flex;
+}
+.headline {
+  position: relative;
+  height: 10px;
+  width: 100%;
+}
+h1 {
+  position: absolute;
+  color: white;
+  top: 5px;
+  left: 35%;
+  width: 100%;
+}
