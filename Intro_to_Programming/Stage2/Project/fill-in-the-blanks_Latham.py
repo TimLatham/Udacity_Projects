@@ -37,7 +37,7 @@ tuple, and ___4___ or can be more complicated such as objects and lambda functio
 
 import random # so that a random flashcard can be chosen for each iteration
 
-# find blanks in a provided sentence given a list of potential blanks to fill
+# find blanks in a provided sentence(s) given a list of potential blanks to fill
 def findBlanks(sentence, blanks1):
     for i in blanks1:
         if sentence.find(i) > -1:
@@ -49,12 +49,13 @@ def grabSentence(sentenceList):
     sentence = sentenceList[randomItem-1]
     return sentence
 
-# Take user input to replace blank items in the flashcard.
+# Take user input to replace blank items in the flashcard.  
+# User input is forced to all caps so it stands out in the returned sentence(s)
 def flashMe(sentence):
     output = sentence
     for i in blanksInString:
         user_input = raw_input("Type in a: " + i + " ")
-        output = output.replace(i, user_input)
+        output = output.replace(i, user_input.upper())
     return output
 
 # The fill in the blanks sentences used as flash cards
@@ -78,7 +79,7 @@ then certainly ___9___ counts.'''
 # A list of potential replacement blanks to be passed in to the flashMe function. 
 blanks1  = ["___1___", "___2___", "___3___", "___4___", "___5___", "___6___", "___7___", "___8___", "___9___"]
 
-# Put the flashCards into a list so that grabSentence can be invoked to pick a randome item at runtime
+# Put the flashCards into a list so that grabSentence can be invoked to pick a random item at runtime
 flashCards = [sample, comment, loops, boolean, megaMem]
 sentence = grabSentence(flashCards)
 print sentence
