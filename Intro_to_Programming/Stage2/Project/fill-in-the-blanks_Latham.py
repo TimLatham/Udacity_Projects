@@ -34,48 +34,58 @@ tuple, and ___4___ or can be more complicated such as objects and lambda functio
 # How can you adapt that design to work with numbered blanks?
 
 # If you need help, you can sign up for a 1 on 1 coaching appointment: https://calendly.com/ipnd-1-1/20min/
-sampleList = sample.split()
-print sampleList
+
+import random # so that a random flashcard can be chosen for each iteration
+
+# find blanks in a provided sentence given a list of potential blanks to fill
+def findBlanks(sentence, blanks1):
+    for i in blanks1:
+        if sentence.find(i) > -1:
+            blanksInString.append(i)
+
+# choose a random item from a list of sentences            
+def grabSentence(sentenceList):
+    randomItem = random.randint(1, len(sentenceList))
+    sentence = sentenceList[randomItem-1]
+    return sentence
+
+# Take user input to replace blank items in the flashcard.
+def flashMe(sentence):
+    output = sentence
+    for i in blanksInString:
+        user_input = raw_input("Type in a: " + i + " ")
+        output = output.replace(i, user_input)
+    return output
+
+# The fill in the blanks sentences used as flash cards
+comment = '''A ___1___ is created by using the # symbol.  You should add ___1___s to describe how the overall
+___2___ works, as well as for each defined ___3___.  This will add clarity to your code for when you return
+to it or someone else is debugging it.'''
+
+loops = '''There are two main kinds of ___1___s in Python.  The first is a ___2___ ___1___, which iterates a 
+specified number of times. The second is a ___3___ ___1___, which will iterate as long as the condition remains
+True.  ___2___ ___1___s are a simplified case of ___3___ ___1___s.'''
+
+boolean = '''A ___1___ is an item that can be one thing or the other, either ___2___ or ___3___.  If a 
+condition is ___2___, it is in accordance with fact or reality.  If a condition is ___3___, it is not.'''
+
+megaMem = '''My Very Educated Mother Just Served Us Nine Pizzas is a popular mnemonic device.  It is
+a good way to remember that ___1___, ___2___, ___3___, ___4___, ___5___, ___6___, ___7___, ___8___ and 
+___9___ are the 9 planets.  Yes, I don't care what they say, ___9___ is a planet.  If ___1___ counts, 
+then certainly ___9___ counts.'''
 
 
-# A list of replacement blanks to be passed in to the play game function. 
+# A list of potential replacement blanks to be passed in to the flashMe function. 
 blanks1  = ["___1___", "___2___", "___3___", "___4___", "___5___", "___6___", "___7___", "___8___", "___9___"]
 
-# The following are some test strings to pass in to the play_game function.
-test_string1 = '''A ___1___ is created with the def keyword. You specify the inputs a ___1___ takes by
-adding ___2___ separated by commas between the parentheses. ___1___s by default return ___3___ if you
-don't specify the value to return. ___2___ can be standard data types such as string, number, dictionary,
-tuple, and ___4___ or can be more complicated such as objects and lambda functions.'''
+# Put the flashCards into a list so that grabSentence can be invoked to pick a randome item at runtime
+flashCards = [sample, comment, loops, boolean, megaMem]
+sentence = grabSentence(flashCards)
+print sentence
 
-# UPDATE THIS WITH A NEW STRING!!
-test_string2 = """PERSON! What is PERSON going to do with all these ADJECTIVE PLURALNOUN? Only a registered 
-OCCUPATION could VERB them."""
+# For the randomly chosen flashcard, identify which blanks are used and load into a list
+blanksInString = []
+findBlanks(sentence, blanks1)
 
-# UPDATE THIS WITH A NEW STRING!!
-test_string3 = "What a ADJECTIVE day! I can VERB the day off from being a OCCUPATION and go VERB at PLACE."
-
-# Checks if a word in parts_of_speech is a substring of the word passed in.
-def replace_blanks(word, blanks):
-    for blank in blanks:
-        if blank in word:
-            return blank
-    return None
-        
-# UPDATE THE COMMENTS!!!
-# Plays a full game of mad_libs. A player is prompted to replace words in ml_string, 
-# which appear in parts_of_speech with their own words.  
-def play_game(fib_string, blanks):    
-    replaced = []
-    fib_string = fib_string.split()
-    for word in fib_string:
-        replacement = replace_blanks(word, blanks)
-        if replacement != None:
-            user_input = raw_input("Type in a: " + replacement + " ")
-            word = word.replace(replacement, user_input)
-            replaced.append(word)
-        else:
-            replaced.append(word)
-    replaced = " ".join(replaced)
-    return replaced
-    
-print play_game(test_string1, blanks1)       
+# For the randomly generated sentence, replace the identified blanks with user input
+print flashMe(sentence)
