@@ -37,21 +37,15 @@ tuple, and ___4___ or can be more complicated such as objects and lambda functio
 
 
 
-
-# This function is used to define the level based on user input
-import sys
-
 # This function resets items and begins each new game
 def startGame():
     chosenLevel = chooseLevel()
+    loadLevel = levelsShort.index(chosenLevel)
     maxGuesses = numberGuesses()
-    loadLevel = levelLoad(chosenLevel)
-    # For the randomly chosen item, identify which blanks are used and load into a list
-    blanksInString = []
     findBlanks(levels[loadLevel], blanks1)
     mainLoop(levels[loadLevel], loadLevel, maxGuesses)
 
-# Allow user to select difficulty level, including a hidden easter egg level
+# Allow user to select difficulty level, including a hidden easter egg level and the sample level
 def chooseLevel():
     print "Please select a game difficuly by typing it in"
     print "possible choices include easy, medium and hard"
@@ -81,17 +75,6 @@ def numberGuesses():
         print
         return int(maxGuesses)
     
-# This function finds the index for the levels list for the chosen level
-def levelLoad(chosenLevel):
-    if chosenLevel == 'e':
-        return 0
-    elif chosenLevel == 'm':
-        return 1
-    elif chosenLevel == 'h':
-        return 2
-    else:
-        return 3
-
 # find blanks in a provided sentence(s) given a list of potential blanks to fill
 def findBlanks(fillIn, blanks1):
     for i in blanks1:
@@ -121,9 +104,8 @@ def mainLoop(level, loadLevel, maxGuesses):
             print
             remainingGuesses -= 1
     print 'You have run out of guesses!'
-    print 'The solution is:'
-    print level
-    #sys.exit()
+    print 'GAME OVER'
+    
         
 # checks the user's guess versus the solution key and updates for correct answers
 def guessCheck(guess, loadLevel, questionNumber):
@@ -156,44 +138,42 @@ def endGame(currentParagraph):
     print 'The solution is:'
     print(currentParagraph)
     print
-    #sys.exit()
-    
-
 
 # all caps for indicating a variable that never changes aka a constant
-POSSIBLELEVELS = ['easy', 'medium', 'hard', 'e', 'm', 'h', 'impossible', 'i']
+POSSIBLELEVELS = ['easy', 'medium', 'hard', 'e', 'm', 'h', 'impossible', 'i', 'sample', 's']
 
 # Text for each of the levels
 easy = '''A ___1___ is created by using the # symbol.  You should add ___1___s to describe how the overall
 ___2___ works, as well as for each defined ___3___.  This will add clarity to your code for when you return
-to it or someone else is debugging it.'''
+to it or someone else is debugging it.  To make multi-line ___1___s or paragraphs, use three ___4___ marks'''
 
-medium = '''There are two main kinds of ___1___s in Python.  The first is a ___2___ ___1___, which iterates a 
+medium = '''There are two main kinds of ___1___s in ___4___.  The first is a ___2___ ___1___, which iterates a 
 specified number of times. The second is a ___3___ ___1___, which will iterate as long as the condition remains
-True.  ___2___ ___1___s are a simplified case of ___3___ ___1___s.'''
+True.  ___2___ ___1___s can be used as a streamlined case of ___3___ ___1___s.'''
 
 hard = '''A ___1___ is an item that can be one thing or the other, either ___2___ or ___3___.  If a 
-condition is ___2___, it is in accordance with fact or reality.  If a condition is ___3___, it is not.'''
+condition is ___2___, it is in accordance with fact or reality.  If a condition is ___3___, it is not.  ___4___ 
+operators, such as 'and' and '___5___' are frequently used in conjunction with ___1___s.'''
 
 impossible = '''My Very Educated Mother Just Served Us Nine Pizzas is a popular mnemonic device.  It is
 a good way to remember that ___1___, ___2___, ___3___, ___4___, ___5___, ___6___, ___7___, ___8___ and 
 ___9___ are the 9 planets.  Yes, I don't care what they say, ___9___ is a planet.  If ___1___ counts, 
 then certainly ___9___ counts.'''
 
-levels = [easy, medium, hard, impossible]
+levels = [easy, medium, hard, impossible, sample]
+levelsShort = ['e', 'm', 'h', 'i', 's']
 
 # Solutions list for each problem set
-easyAnswer = ['comment', 'program', 'function']
-mediumAnswer = ['loop', 'for', 'while']
-hardAnswer = ['boolean', 'true', 'false']
+easyAnswer = ['comment', 'program', 'function', 'quotation']
+mediumAnswer = ['loop', 'for', 'while', 'python']
+hardAnswer = ['boolean', 'true', 'false', 'logical', 'or']
 impossibleAnswer = ['mercury', 'venus', 'earth', 'mars', 'jupiter', 'saturn', 'uranus', 'neptune', 'pluto']
+sampleAnswer = ['function', 'arguments', 'none', 'list']
 
-answers = [easyAnswer, mediumAnswer, hardAnswer, impossibleAnswer]
+answers = [easyAnswer, mediumAnswer, hardAnswer, impossibleAnswer, sampleAnswer]
 
 # A list of potential replacement blanks to be passed in to the mainLoop function. 
 blanks1  = ["___1___", "___2___", "___3___", "___4___", "___5___", "___6___", "___7___", "___8___", "___9___"]
-
-
 
 
 # Code that plays the game
