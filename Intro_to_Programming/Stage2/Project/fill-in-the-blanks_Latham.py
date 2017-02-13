@@ -37,29 +37,42 @@ tuple, and ___4___ or can be more complicated such as objects and lambda functio
 
 
 
-# This function resets items and begins each new game
 def startGame():
+    """
+    Behavior:   This function resets items and begins each new game
+    Inputs:     Takes no inputs
+    Outputs:    Generates the inputs needed and outputs to the mainLoop function
+    """
     chosenLevel = chooseLevel()
     loadLevel = levelsShort.index(chosenLevel)
     maxGuesses = numberGuesses()
     findBlanks(levels[loadLevel], blanks1)
     mainLoop(levels[loadLevel], loadLevel, maxGuesses)
 
-# Allow user to select difficulty level, including a hidden easter egg level and the sample level
 def chooseLevel():
+    """
+    Behavior:   Allow user to select difficulty level, including a hidden easter egg level and the sample level
+    Inputs:     Takes no inputs
+    Outputs:    Returns the first character of the string assigned to level
+    """
     print "Please select a game difficuly by typing it in"
     print "possible choices include easy, medium and hard"
     level = raw_input().lower()
-    if level not in POSSIBLELEVELS:
+    while level not in POSSIBLELEVELS:
+        print
         print "Acceptable input is e, easy, m, medium, h, or hard"
         print
-        chooseLevel()
+        level = raw_input().lower()
     print "You've chosen: " + level + '!!'
-    return level[0]
+    return level[FIRSTITEM]
   
-# This function allows the user to define the maximum incorrect guesses
-# they can enter, in a range from 1 to 10
 def numberGuesses():
+    """
+    Behavior:   This function allows the user to define the maximum incorrect guesses
+                they can enter, in a range from 1 to 10
+    Inputs:     Takes no inputs
+    Outputs:    Returns the maximum guesses selected by the user as an integer
+    """
     print "Please choose the maximum incorrect guesses (1-10)"
     maxGuesses = raw_input()
     if not maxGuesses.isdigit():
@@ -75,25 +88,31 @@ def numberGuesses():
         print
         return int(maxGuesses)
     
-# find blanks in a provided sentence(s) given a list of potential blanks to fill
 def findBlanks(fillIn, blanks1):
-    for i in blanks1:
-        if fillIn.find(i) > -1:
-            blanksInString.append(i)
+    """
+    Behavior:   Find blanks in a provided sentence(s) given a list of potential blanks to fill
+    Inputs:     fillIn, which is the paragraph for the selected level, and blanks1
+                which is a list of potential blanks
+    Outputs:    None, but populates the list blanksInString with the blanks that are in 
+                the selected levels paragraph
+    """
+    for item in blanks1:
+        if fillIn.find(item) > -1:
+            blanksInString.append(item)
 
-# This is the main game loop which controls overall play
 def mainLoop(level, loadLevel, maxGuesses):
+    """
+    Behavior:   This is the main game loop which controls overall play
+    Inputs:     level, which is the paragraph corresponding to the level selected by the user
+                loadLevel, which is the item in the levels list corresponding to level
+                maxGuesses, which is the maximum potential incorrect items per user selection
+    Outputs:    The game behavior for user interaction of guessing and completing the paragraph
+    """
     currentParagraph = level
     remainingGuesses = maxGuesses
     questionNumber = 1
     while len(blanksInString) > 0 and remainingGuesses > 0:
-        print 'You have: ' + str(remainingGuesses) + ' guesses remaining.'
-        print
-        print 'The current paragraph reads as such:'
-        print
-        print currentParagraph
-        print
-        print 'What should be substituted for ' + blanksInString[0] + '?'
+        subloop(remainingGuesses, currentParagraph)
         guess = raw_input().lower()
         if guessCheck(guess, loadLevel, questionNumber) == True:
             currentParagraph = updateParagraph(currentParagraph, guess)
@@ -101,42 +120,77 @@ def mainLoop(level, loadLevel, maxGuesses):
             remainingGuesses = maxGuesses
         else:
             print guess + ' is not correct!'
-            print
             remainingGuesses -= 1
-    print 'You have run out of guesses!'
+            if remainingGuesses == 0:
+                print 'You have run out of guesses!'
     print 'GAME OVER'
     
-        
-# checks the user's guess versus the solution key and updates for correct answers
+def subloop(remainingGuesses, currentParagraph):
+    """
+    Behavior:   Lets user know the guesses remaining, current paragraph state, and asks for the next input
+    Inputs:     remainingGuesses, the count of incorrect guesses possible before losing,
+                currentParagraph, the current paragraph state for the selected level
+    Outputs:    None, but provides onscreen user feedback
+    """
+    print 'You have: ' + str(remainingGuesses) + ' guesses remaining.'
+    print 'The current paragraph reads as such:'
+    print currentParagraph
+    print 'What should be substituted for ' + blanksInString[FIRSTITEM] + '?'
+
+
 def guessCheck(guess, loadLevel, questionNumber):
+    """
+    Behavior:   Checks the user's guess versus the solution key and updates for correct answers
+    Inputs:     guess, the users input for the currently considered item
+                loadLevel, which is the item in the levels list corresponding to level
+                questionNumber, the current item being reviewed out of potential blank items
+    Outputs:    Returns True if the guess is correct, otherwise False
+    """
     if guess == answers[loadLevel][questionNumber-1]:
         print 'Correct!'
         print
         return True
     return False
 
-# This function updates the fill in the blank for guesses that are correct
 def updateParagraph(currentParagraph, guess):
-    currentParagraph = currentParagraph.replace(blanksInString[0], guess.upper())
-    blanksInString.remove(blanksInString[0])
+    """
+    Behavior:   This function updates the fill in the blank for guesses that are correct
+    Inputs:     currentParagraph, which is the paragraph as it currently stands
+                guess, the users input for the currently considered item
+    Outputs:    Returns currentParagraph after updating it with the correct user guess for the currently
+                considered item, unless the entire paragraph has been correctly completed, which
+                will move the user to the endGame function
+    """
+    currentParagraph = currentParagraph.replace(blanksInString[FIRSTITEM], guess.upper())
+    blanksInString.remove(blanksInString[FIRSTITEM])
     if completeCheck() == True:
         endGame(currentParagraph)
     else:
         return currentParagraph
 
-# This function checks if the fill in the blank has been completed
 def completeCheck():
+    """
+    Behavior:   This function checks if the fill in the blank has been completed
+    Inputs:     Takes no inputs
+    Outputs:    Returns True is the puzzle is completed, indicated by no items left in 
+                the blanksInString list, otherwise returns False
+    """
     if len(blanksInString) == 0:
         return True
     return False
 
-# This function closes out a winning game and offers the opportunity to restart
+
 def endGame(currentParagraph):
+    """
+    Behavior:   This function closes out a winning game
+    Inputs:     currentParagraph, which in this case is the completed/solved version
+    Outputs:    Screen production of winning message and the completed paragraph
+    """
     print
     print 'YOU WON!!!!!!!!'
     print
     print 'The solution is:'
-    print(currentParagraph)
+    print (currentParagraph)
     print
 
 # all caps for indicating a variable that never changes aka a constant
@@ -174,10 +228,11 @@ answers = [easyAnswer, mediumAnswer, hardAnswer, impossibleAnswer, sampleAnswer]
 
 # A list of potential replacement blanks to be passed in to the mainLoop function. 
 blanks1  = ["___1___", "___2___", "___3___", "___4___", "___5___", "___6___", "___7___", "___8___", "___9___"]
-
+# Python starts counting at zero, therefore the first item in a string or list is item 0
+# Adding this per Udacity reviewer feedback to avoid "magic numbers"
+# all caps for indicating a variable that never changes aka a constant
+FIRSTITEM = 0
 
 # Code that plays the game
 blanksInString = []
 startGame()
-
-
