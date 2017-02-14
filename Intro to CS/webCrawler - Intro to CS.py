@@ -30,9 +30,36 @@ def crawl_web(seed):
     while tocrawl:
         page = tocrawl.pop()
         if page not in crawled:
-            union (tocrawl, get_all_links(get_page(page)))
+            content = get_page(page)
+            
+            
+            union (tocrawl, get_all_links(content)
             crawled.append(page)
     return crawled
+
+def get_page(url):
+    try:
+        import urllib
+        return urllib.urlopen(url).read()
+    except:
+        return ""
+    
+'''
+def add_to_index(index, keyword, url):
+    for entry in index: 
+        if entry[0] == keyword: 
+            entry[1].append(url) 
+            return 
+            
+
+    
+    
+index = []
+add_to_index(index, 'udacity', 'http://udacity.com')
+index.append([keyword, [url]])
+print index
+'''
+
 
 links = get_all_links('http://www.udacity.com/cs101x/index.html')
 print links
