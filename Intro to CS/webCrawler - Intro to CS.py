@@ -14,13 +14,25 @@ def get_next_target(page):
     url = page[start_quote + 1 : end_quote]
     return url, end_quote
 
-def print_all_links(page):
+def get_all_links(page):
+    links = []
     while True:
         url, endpos = get_next_target(page)
         if url:
-            print url
+            link.append(url)
             page = page[endpos:]
         else:
             break
     
-print_all_links('this <a href="test1">link 1</a> is <a href="test2">link 2</a> a <a href="test3">link 3</a>')
+def crawl_web(seed):
+    tocrawl = [seed]
+    crawled = []
+    while tocrawl:
+        page = tocrawl.pop()
+        if page not in crawled:
+            union (tocrawl, get_all_links(get_page(page)))
+            crawled.append(page)
+    return crawled
+
+links = get_all_links('http://www.udacity.com/cs101x/index.html')
+print links
