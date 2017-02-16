@@ -35,13 +35,16 @@ def get_all_links(page):
 def crawl_web(seed):
     tocrawl = [seed]
     crawled = []
+    graph = {} # <url>, [list of pages it links to]
     index = {}
     while tocrawl:
         page = tocrawl.pop()
         if page not in crawled:
             content = get_page(page)
             add_page_to_index(index, page, content)
-            union(tocrawl, get_all_links(content))
+            outlinks = get_all_links(content)
+            graph[page] = outlinks
+            union(tocrawl, outlinks)
             crawled.append(page)
     return index
 
@@ -100,6 +103,26 @@ def make_big_index(size):
                 letters[i] = 'a'
     return index
 
+def compute_ranks(graph):
+    d = 0.8 # damping factor
+    numloops = 10
+    
+    ranks = {}
+    npages = len(graph)
+    for page in graph:
+        ranks[page] = 1.0 / npages
+
+    for i in range(0, numloops):
+        newranks = {}
+        for page in graph:
+            newrank = (1 - d) / npages
+        
+            for node in graph:
+                if page in graph[node]:
+                    newrank += ranks[node] * d / len(graph[node])
+            newranks[page] = newrank
+        ranks = newranks
+    return ranks
     
 # add_to_index(index, word, 'fake')
 # print index
