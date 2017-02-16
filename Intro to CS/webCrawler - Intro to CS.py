@@ -30,19 +30,20 @@ def get_all_links(page):
             page = page[endpos:]
         else:
             break
+    return links
     
 def crawl_web(seed):
     tocrawl = [seed]
     crawled = []
+    index = {}
     while tocrawl:
         page = tocrawl.pop()
         if page not in crawled:
             content = get_page(page)
-            
-            
+            add_page_to_index(index, page, content)
             union(tocrawl, get_all_links(content))
             crawled.append(page)
-    return crawled
+    return index
 
 def get_page(url):
     try:
@@ -50,7 +51,41 @@ def get_page(url):
         return urllib.urlopen(url).read()
     except:
         return ""
-    
+
+def add_page_to_index(index, url, content):
+    words = content.split()
+    for word in words:
+        add_to_index(index, word, url)
+
+def add_to_index(index, keyword, url):
+    if keyword in index:
+        index[keyword].append(url) # this will look up in the dictionary the entry that corresponds to the index, which is going to be thelist or urls
+    else:
+        # not found, add new keyword to index
+        index[keyword] = [url]
+    """for entry in index:
+        if entry[0] == keyword:
+            entry[1].append(url)
+            return
+    # not found, add new keyword to index
+    index.append([keyword, [url]])"""
+
+def lookup(index, keyword):
+    if keyword in index: # instead of a loop, check to see if keyword is in the index
+        return index[keyword] # if it is, use dictionary lookup
+    else:
+        return None # if the keyword is not in the index
+    """for entry in index:
+        if entry[0] == keyword:
+            return entry[1]
+    return None"""
+
+def make_string(p):
+    s = ""
+    for e in p: # for each element in the list p
+        s = s + e # add it to string s
+    return s
+        
 def make_big_index(size):
     index = []
     letters = ['a', 'a', 'a', 'a', 'a', 'a', 'a', 'a']
@@ -64,23 +99,10 @@ def make_big_index(size):
             else:
                 letters[i] = 'a'
     return index
-        
-def make_string(p):
-    s = ""
-    for e in p: # for each element in the list p
-        s = s + e # add it to string s
-    return s
 
-def add_to_index(index, keyword, url):
-    for entry in index: 
-        if entry[0] == keyword: 
-            entry[1].append(url) 
-            return 
     
-index = []
-add_to_index(index, word, 'fake')
-#index.append([keyword, [url]])
-print index
+# add_to_index(index, word, 'fake')
+# print index
 
 
 
