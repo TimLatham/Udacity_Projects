@@ -13,7 +13,7 @@ def draw_shapes():
     brad = turtle.Turtle()
     brad.shape("turtle")
     brad.color("yellow")
-    brad.speed(4)
+    brad.speed(10)
     
     for i in range(36):
         draw_square(brad)
@@ -24,14 +24,14 @@ def draw_shapes():
     angie.color("blue")
     angie.speed(1.5)
     
-    draw_circle(angie)
+    #draw_circle(angie)
 
     fred = turtle.Turtle()
     fred.shape("triangle")
     fred.color("green")
     fred.speed(3)    
     
-    draw_triangle(fred)
+    #draw_triangle(fred)
     
     tim = turtle.Turtle()
     tim.shape("turtle")
@@ -60,6 +60,12 @@ def draw_name(tim):
     tim.right(180)
     tim.forward(50)
     tim.left(90)
+    tim.forward(100)
+    tim.left(90)
+    tim.forward(150)
+    tim.right(180)
+    tim.forward(50)
+    tim.right(90)
     tim.forward(100)
         
 draw_shapes()
