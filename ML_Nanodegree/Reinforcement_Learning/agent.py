@@ -1,4 +1,4 @@
-import random
+﻿import random
 import math
 from environment import Agent, Environment
 from planner import RoutePlanner
@@ -48,7 +48,7 @@ class LearningAgent(Agent):
             if self.initialtrial == 0:
                 self.initialtrial+=1
             else:
-                self.epsilon -= 0.05
+                self.epsilon -= 0.005
         return None
     
     def build_state(self):
