@@ -1,4 +1,4 @@
-﻿import random
+import random
 import math
 from environment import Agent, Environment
 from planner import RoutePlanner
