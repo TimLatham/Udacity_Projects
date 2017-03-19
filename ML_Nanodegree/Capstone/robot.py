@@ -43,13 +43,14 @@ class Robot(object):
         rotation = -90
         movement = 1
         Robot.updateHeading(self, rotation)
-        #print self.heading
+        Robot.updateLocation(self, movement)
+        print self.heading
         #test = [6, 6]
         #self.visited[6][6] += 1
-        #print Robot.goalFound(self)
-        self.visited[self.location[0]][self.location[1]] += 1
-        print self.location, self.location[0], self.location[1]
-        #print self.visited
+        print Robot.goalFound(self)
+        
+        print self.location
+        print self.visited
         return rotation, movement
     
     def visited(self):
@@ -73,7 +74,16 @@ class Robot(object):
         self.heading = direction[self.orientation]
         return
 
-    def updateLocation(self):
+    def updateLocation(self, movement):
+        if self.orientation == 0:
+            self.location[1] += movement
+        elif self.orientation == 90:
+            self.location[0] += movement
+        elif self.orientation == 180:
+            self.location[1] -= movement
+        elif self.orientation == 270:
+            self.location[0] -= movement
+        self.visited[self.location[0]][self.location[1]] += 1
         return
         
         
