@@ -40,14 +40,23 @@ class Robot(object):
         '''
         print sensors
         #print self.goal
-        rotation = -90
-        movement = 1
+            
+        moves = Robot.potentialMoves(self, sensors)
+        #print moves, moves[0], moves[1]
+        if Robot.goalFound(self) == True:
+            rotation, movement = 'Reset'
+        else:
+            rotation = moves[0]
+            movement = moves[1]
+        #rotation = 0
+        #movement = 0
+        #print moves
         Robot.updateHeading(self, rotation)
         Robot.updateLocation(self, movement)
         print self.heading
         #test = [6, 6]
         #self.visited[6][6] += 1
-        print Robot.goalFound(self)
+        
         
         print self.location
         print self.visited
@@ -60,9 +69,64 @@ class Robot(object):
     def goalFound(self):
         for i in range(4):
             if self.visited[self.goal[i][0]][self.goal[i][1]] > 0:
-                return 'Found It!!'
+                return True
         return
     
+    def potentialMoves(self, sensors):
+        moves = []
+        maxMove = 1
+        if sensors[0] > 0:
+            moves.append((-90, maxMove))
+        if sensors[1] > 0:
+            moves.append((0, maxMove))
+        if sensors[2]>0:
+            moves.append((90, maxMove))
+        if sum(sensors) == 0:
+            moves.append((90, 0))
+        '''
+                if sensors[0] > 0:
+            moves.append((-90, min(maxMove, sensors[0])))
+        if sensors[1] > 0:
+            moves.append((0, min(maxMove, sensors[1])))
+        if sensors[2]>0:
+            moves.append((90, min(maxMove, sensors[2])))
+        if sum(sensors) == 0:
+            moves.append((90, 0))
+        '''
+
+
+        #print moves
+        minVisitIndex = Robot.minVisits(self, moves)
+        return moves[minVisitIndex]
+        
+    def minVisits(self, moves):
+        originalLocation = self.location
+        originalOrientation = self.orientation
+        visits = []
+        
+        for i in range(len(moves)):
+            newLocation = originalLocation
+            newOrientation = originalOrientation + moves[i][0]
+            if newOrientation == -90:
+                newOrientation = 270
+            elif newOrientation == 360:
+                newOrientation = 0
+                
+            if newOrientation == 0:
+                newLocation[1] += moves[i][1]
+            if newOrientation == 90:
+                newLocation[0] += moves[i][1]
+            if newOrientation == 180:
+                newLocation[1] -= moves[i][1]
+            if newOrientation == 270:
+                newLocation[0] -= moves[i][1]
+            visits.append(self.visited[newLocation][0][1])
+        
+        moveIndex = visits.index(min(visits))
+        return moveIndex
+        
+        
+        
     def updateHeading(self, rotation):
         direction = {0: 'up', 90: 'right', 180: 'down', 270: 'left'}
         #self.orientation = direction.keys()[direction.values().index(self.heading)]
