@@ -1,4 +1,5 @@
 import numpy as np
+import random
 
 class Robot(object):
     def __init__(self, maze_dim):
@@ -11,12 +12,9 @@ class Robot(object):
 
         self.location = [0, 0]
         self.heading = 'up'
-        self.orientation = 0
         self.maze_dim = maze_dim
-        self.visited = np.zeros((maze_dim, maze_dim))
-        #self.visited[0,0] = 1
-        self.goal = [[maze_dim/2, maze_dim/2], [maze_dim/2-1, maze_dim/2-1], [maze_dim/2, maze_dim/2-1], [maze_dim/2-1, maze_dim/2]]
         self.move_count = 0
+        self.orientation = 0
 
     def next_move(self, sensors):
         '''
@@ -39,45 +37,37 @@ class Robot(object):
         the maze) then returing the tuple ('Reset', 'Reset') will indicate to
         the tester to end the run and return the robot to the start.
         '''
-        print('Move Count: %s' % self.move_count)
-        print('Sensor Reading (l, f, r): %s' % sensors)
-        print('Location (x, y): %s' % self.location)
-        #print self.goal
-        self.visited[self.location[0]][self.location[1]] += 1    
-        #self.visited[self.location] += 1
-        moves = Robot.potentialMoves(self, sensors)
-        print moves
+        
+        print('Move count is: %s' % self.move_count)
+        print('Location is: %s' % self.location)
+        print('Heading is: %s' % self.heading)
+        print('Sensor readings (l, f, r) are: %s' % sensors)
+        
+        # Create various move functions - random move, minimum visits, A*
+        
+        moves = Robot.validMoves(self, sensors)
+        print('Valid moves are: %s' % moves)
+        
         if Robot.goalFound(self) == True:
             rotation, movement = 'Reset', 'Reset'
         else:
-            rotation = moves[0]
-            movement = moves[1]
-        #rotation = 0
-        #movement = 0
-        #print moves
-        #Robot.updateHeading(self, rotation)
-        #Robot.updateLocation(self, movement)
-        print self.heading
-        #test = [6, 6]
-        #self.visited[6][6] += 1
+            moveSelector = random.randint(1, len(moves)) - 1
+            rotation = moves[moveSelector][0]
+            movement = moves[moveSelector][1]
         
+        # Need to add a RESET function to return to position 0,0, heading up, etc
         
-        
-        print self.visited
+        if rotation != 'Reset':
+            Robot.updateHeading(self, rotation)
+            Robot.updateLocation(self, movement)
+
         self.move_count += 1
+                
+        print('Move chosen is rotation: %s, movement: %s' % (rotation, movement))
+        
         return rotation, movement
-    
-    def visited(self):
         
-        return
-        
-    def goalFound(self):
-        for i in range(4):
-            if self.visited[self.goal[i][0]][self.goal[i][1]] > 0:
-                return True
-        return
-    
-    def potentialMoves(self, sensors):
+    def validMoves(self, sensors):
         moves = []
         maxMove = 1
         if sensors[0] > 0:
@@ -88,63 +78,8 @@ class Robot(object):
             moves.append((90, maxMove))
         if sum(sensors) == 0:
             moves.append((-90, 0))
-        '''
-                if sensors[0] > 0:
-            moves.append((-90, min(maxMove, sensors[0])))
-        if sensors[1] > 0:
-            moves.append((0, min(maxMove, sensors[1])))
-        if sensors[2]>0:
-            moves.append((90, min(maxMove, sensors[2])))
-        if sum(sensors) == 0:
-            moves.append((90, 0))
-        '''
-
-
-        print ('Moves: %s' % moves)
-        minVisitIndex = Robot.minVisits(self, moves)
-        return moves[minVisitIndex]
-        #return moves[0]
         
-    def minVisits(self, moves):
-        originalLocation = self.location
-        originalOrientation = self.orientation
-        visits = []
-        
-        for i in range(len(moves)):
-            newLocation = originalLocation
-            newOrientation = originalOrientation + moves[i][0]
-            print('New Location: %s        New Orientation: %s' % (newLocation, newOrientation))
-            if newOrientation == -90:
-                newOrientation = 270
-            elif newOrientation == 360:
-                newOrientation = 0
-                
-            if newOrientation == 0:
-                newLocation[1] += moves[i][1]
-            if newOrientation == 90:
-                newLocation[0] += moves[i][1]
-            if newOrientation == 180:
-                newLocation[1] -= moves[i][1]
-            if newOrientation == 270:
-                newLocation[0] -= moves[i][1]
-            
-            if (newLocation[0] or newLocation[1]) >= (self.maze_dim - 1):
-                break
-            if (newLocation[0] or newLocation[1]) < 0:
-                break
-            
-            print('New Location: %s' % newLocation)
-            print self.visited[newLocation[0]][newLocation[1]]
-            #print self.visited[newLocation][0][1]
-            visits.append(self.visited[newLocation[0]][newLocation[1]])
-            #visits.append(self.visited[newLocation][0][1])
-        
-        print ('Visits: %s' % visits)
-        moveIndex = visits.index(min(visits))
-        print ('Move Index: %s' % moveIndex)
-        return moveIndex
-        
-        
+        return moves
         
     def updateHeading(self, rotation):
         direction = {0: 'up', 90: 'right', 180: 'down', 270: 'left'}
@@ -166,7 +101,10 @@ class Robot(object):
             self.location[1] -= movement
         elif self.orientation == 270:
             self.location[0] -= movement
-        self.visited[self.location[0]][self.location[1]] += 1
+        #self.visited[self.location[0]][self.location[1]] += 1
         return
         
-        
+    def goalFound(self):
+        goal_bounds = [self.maze_dim/2 - 1, self.maze_dim/2]
+        if self.location[0] in goal_bounds and self.location[1] in goal_bounds:
+            return True
