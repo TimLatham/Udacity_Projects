@@ -40,8 +40,8 @@ class Robot(object):
         the tester to end the run and return the robot to the start.
         '''
         print('Move Count: %s' % self.move_count)
-        print sensors
-        print self.location
+        print('Sensor Reading (l, f, r): %s' % sensors)
+        print('Location (x, y): %s' % self.location)
         #print self.goal
         self.visited[self.location[0]][self.location[1]] += 1    
         #self.visited[self.location] += 1
@@ -103,6 +103,7 @@ class Robot(object):
         print ('Moves: %s' % moves)
         minVisitIndex = Robot.minVisits(self, moves)
         return moves[minVisitIndex]
+        #return moves[0]
         
     def minVisits(self, moves):
         originalLocation = self.location
@@ -126,13 +127,15 @@ class Robot(object):
                 newLocation[1] -= moves[i][1]
             if newOrientation == 270:
                 newLocation[0] -= moves[i][1]
-            if newLocation[0] or newLocation[1] >= self.maze_dim:
-                newLocation = originalLocation
-            if newLocation[0] or newLocation[1] < 0:
-                newLocation = originalLocation
             
+            if (newLocation[0] or newLocation[1]) >= (self.maze_dim - 1):
+                break
+            if (newLocation[0] or newLocation[1]) < 0:
+                break
+            
+            print('New Location: %s' % newLocation)
             print self.visited[newLocation[0]][newLocation[1]]
-            print self.visited[newLocation][0][1]
+            #print self.visited[newLocation][0][1]
             visits.append(self.visited[newLocation[0]][newLocation[1]])
             #visits.append(self.visited[newLocation][0][1])
         
