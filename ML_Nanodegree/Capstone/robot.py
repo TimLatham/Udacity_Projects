@@ -14,8 +14,9 @@ class Robot(object):
         self.orientation = 0
         self.maze_dim = maze_dim
         self.visited = np.zeros((maze_dim, maze_dim))
-        self.visited[0,0] = 1
+        #self.visited[0,0] = 1
         self.goal = [[maze_dim/2, maze_dim/2], [maze_dim/2-1, maze_dim/2-1], [maze_dim/2, maze_dim/2-1], [maze_dim/2-1, maze_dim/2]]
+        self.move_count = 0
 
     def next_move(self, sensors):
         '''
@@ -38,28 +39,32 @@ class Robot(object):
         the maze) then returing the tuple ('Reset', 'Reset') will indicate to
         the tester to end the run and return the robot to the start.
         '''
+        print('Move Count: %s' % self.move_count)
         print sensors
+        print self.location
         #print self.goal
-            
+        self.visited[self.location[0]][self.location[1]] += 1    
+        #self.visited[self.location] += 1
         moves = Robot.potentialMoves(self, sensors)
-        #print moves, moves[0], moves[1]
+        print moves
         if Robot.goalFound(self) == True:
-            rotation, movement = 'Reset'
+            rotation, movement = 'Reset', 'Reset'
         else:
             rotation = moves[0]
             movement = moves[1]
         #rotation = 0
         #movement = 0
         #print moves
-        Robot.updateHeading(self, rotation)
-        Robot.updateLocation(self, movement)
+        #Robot.updateHeading(self, rotation)
+        #Robot.updateLocation(self, movement)
         print self.heading
         #test = [6, 6]
         #self.visited[6][6] += 1
         
         
-        print self.location
+        
         print self.visited
+        self.move_count += 1
         return rotation, movement
     
     def visited(self):
@@ -82,7 +87,7 @@ class Robot(object):
         if sensors[2]>0:
             moves.append((90, maxMove))
         if sum(sensors) == 0:
-            moves.append((90, 0))
+            moves.append((-90, 0))
         '''
                 if sensors[0] > 0:
             moves.append((-90, min(maxMove, sensors[0])))
@@ -95,7 +100,7 @@ class Robot(object):
         '''
 
 
-        #print moves
+        print ('Moves: %s' % moves)
         minVisitIndex = Robot.minVisits(self, moves)
         return moves[minVisitIndex]
         
@@ -107,6 +112,7 @@ class Robot(object):
         for i in range(len(moves)):
             newLocation = originalLocation
             newOrientation = originalOrientation + moves[i][0]
+            print('New Location: %s        New Orientation: %s' % (newLocation, newOrientation))
             if newOrientation == -90:
                 newOrientation = 270
             elif newOrientation == 360:
@@ -120,9 +126,19 @@ class Robot(object):
                 newLocation[1] -= moves[i][1]
             if newOrientation == 270:
                 newLocation[0] -= moves[i][1]
-            visits.append(self.visited[newLocation][0][1])
+            if newLocation[0] or newLocation[1] >= self.maze_dim:
+                newLocation = originalLocation
+            if newLocation[0] or newLocation[1] < 0:
+                newLocation = originalLocation
+            
+            print self.visited[newLocation[0]][newLocation[1]]
+            print self.visited[newLocation][0][1]
+            visits.append(self.visited[newLocation[0]][newLocation[1]])
+            #visits.append(self.visited[newLocation][0][1])
         
+        print ('Visits: %s' % visits)
         moveIndex = visits.index(min(visits))
+        print ('Move Index: %s' % moveIndex)
         return moveIndex
         
         
