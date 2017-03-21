@@ -15,6 +15,7 @@ class Robot(object):
         self.maze_dim = maze_dim
         self.move_count = 0
         self.orientation = 0
+        self.visited = np.zeros((maze_dim, maze_dim))
 
     def next_move(self, sensors):
         '''
@@ -42,6 +43,9 @@ class Robot(object):
         print('Location is: %s' % self.location)
         print('Heading is: %s' % self.heading)
         print('Sensor readings (l, f, r) are: %s' % sensors)
+        print('Visits grid:')
+        self.visited[self.location[0]][self.location[1]] += 1
+        print self.visited
         
         # Create various move functions - random move, minimum visits, A*
         
@@ -55,11 +59,15 @@ class Robot(object):
             rotation = moves[moveSelector][0]
             movement = moves[moveSelector][1]
         
-        # Need to add a RESET function to return to position 0,0, heading up, etc
-        
         if rotation != 'Reset':
             Robot.updateHeading(self, rotation)
             Robot.updateLocation(self, movement)
+        else:
+            self.location = [0, 0]
+            self.heading = 'up'
+            self.move_count = 0
+            self.orientation = 0
+            self.visited = np.zeros((self.maze_dim, self.maze_dim))
 
         self.move_count += 1
                 
