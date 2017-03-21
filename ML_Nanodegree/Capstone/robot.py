@@ -52,6 +52,9 @@ class Robot(object):
         moves = Robot.validMoves(self, sensors)
         print('Valid moves are: %s' % moves)
         
+        minVisitMove = Robot.minVisitMove(self, moves)
+        print ('Min visit move is: %s' % minVisitMove)
+        
         if Robot.goalFound(self) == True:
             rotation, movement = 'Reset', 'Reset'
         else:
@@ -78,12 +81,14 @@ class Robot(object):
     def validMoves(self, sensors):
         moves = []
         maxMove = 1
+        # change this to a loop when refactoring?
         if sensors[0] > 0:
             moves.append((-90, maxMove))
         if sensors[1] > 0:
             moves.append((0, maxMove))
         if sensors[2]>0:
             moves.append((90, maxMove))
+        
         if sum(sensors) == 0:
             moves.append((-90, 0))
         
@@ -116,3 +121,32 @@ class Robot(object):
         goal_bounds = [self.maze_dim/2 - 1, self.maze_dim/2]
         if self.location[0] in goal_bounds and self.location[1] in goal_bounds:
             return True
+            
+    def minVisitMove(self, moves):
+        newLocation = []
+        visits = []
+        for move in moves:
+            newOrientation = self.orientation + move[0]
+            if newOrientation == 360:
+                newOrientation = 0
+            elif newOrientation == -90:
+                newOrientation = 270
+            
+            # Need to fix this function - it's not giving a full (x,y) location right now
+            # create the new location in one variable, then append it to a location list at the end of the ifs
+            # then do code on that for the min
+            if newOrientation == 0:
+                newLocation.append(self.location[1] + move[1])
+            elif newOrientation == 90:
+                newLocation.append(self.location[0] + move[1])
+            elif newOrientation == 180:
+                newLocation.append(self.location[1] - move[1])
+            elif newOrientation == 270:
+                newLocation.append(self.location[0] - move[1])
+            #visits.append(self.visited[newLocation[0]][newLocation[1]])
+            #print(self.visited[newLocation[0]][newLocation[1]])
+            print newLocation
+        print('Visits for potential move spots: %s' % visits)
+        #moveIndex = visits.index(min(visits))
+        #return moveIndex
+
