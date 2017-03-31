@@ -23,7 +23,6 @@ class Robot(object):
         based on the input from the sensors after its previous move. Sensor
         inputs are a list of three distances from the robot's left, front, and
         right-facing sensors, in that order.
-
         Outputs should be a tuple of two values. The first value indicates
         robot rotation (if any), as a number: 0 for no rotation, +90 for a
         90-degree rotation clockwise, and -90 for a 90-degree rotation
@@ -33,7 +32,6 @@ class Robot(object):
         movement, while a negative number indicates backwards movement. The
         robot may move a maximum of three units per turn. Any excess movement
         is ignored.
-
         If the robot wants to end a run (e.g. during the first training run in
         the maze) then returing the tuple ('Reset', 'Reset') will indicate to
         the tester to end the run and return the robot to the start.
@@ -46,6 +44,7 @@ class Robot(object):
         print('Visits grid:')
         self.visited[self.location[0]][self.location[1]] += 1
         print self.visited
+        
         
         # Create various move functions - random move, minimum visits, A*
         
@@ -70,11 +69,13 @@ class Robot(object):
             self.heading = 'up'
             self.move_count = 0
             self.orientation = 0
-            self.visited = np.zeros((self.maze_dim, self.maze_dim))
+            #self.visited = np.zeros((self.maze_dim, self.maze_dim))
 
         self.move_count += 1
                 
         print('Move chosen is rotation: %s, movement: %s' % (rotation, movement))
+        dist = Robot.manhattanDistance(self) 
+        print('Manhattan distance to goal is: %s' % dist)
         
         return rotation, movement
         
@@ -121,6 +122,20 @@ class Robot(object):
         goal_bounds = [self.maze_dim/2 - 1, self.maze_dim/2]
         if self.location[0] in goal_bounds and self.location[1] in goal_bounds:
             return True
+
+    def manhattanDistance(self):
+        lowerLeft = (self.maze_dim/2-1, self.maze_dim/2-1)
+        upperLeft = (self.maze_dim/2-1, self.maze_dim/2)
+        lowerRight = (self.maze_dim/2, self.maze_dim/2-1)
+        upperRight = (self.maze_dim/2, self.maze_dim/2)
+        goal = [lowerLeft, upperLeft, lowerRight, upperRight]
+        distance = []
+        for corner in goal:
+            distance.append((np.absolute(self.location[0] - corner[0]) + np.absolute(self.location[1] - corner[1])))
+        currentDistance = min(distance) # Current min Manhattan distance to goal
+        return currentDistance
+        
+        
             
     def minVisitMove(self, moves):
         newLocationList = []
@@ -153,4 +168,3 @@ class Robot(object):
         print('Visits for potential move spots: %s' % visits)
         moveIndex = visits.index(min(visits))
         return moveIndex
-
