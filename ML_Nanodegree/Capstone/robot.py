@@ -61,10 +61,11 @@ class Robot(object):
         if Robot.goalFound(self) == True:
             rotation, movement = 'Reset', 'Reset'
         else:
-            moveSelector = random.randint(1, len(moves)) - 1
-            #moveSelector = moves[minVisitMove]
-            rotation = moves[moveSelector][0]
-            movement = moves[moveSelector][1]
+            #moveSelector = random.randint(1, len(moves)) - 1
+            #rotation = moves[moveSelector][0]
+            #movement = moves[moveSelector][1]
+            rotation = moves[minVisitMove][0]
+            movement = moves[minVisitMove][1]
         
         if rotation != 'Reset':
             Robot.updateHeading(self, rotation)
