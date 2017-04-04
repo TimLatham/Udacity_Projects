@@ -144,6 +144,25 @@ class Robot(object):
             distance.append((np.absolute(self.location[0] - corner[0]) + np.absolute(self.location[1] - corner[1])))
         currentDistance = min(distance) # Current min Manhattan distance to goal
         return currentDistance
+    
+    def manhattanDistanceMoves(self, moves):
+        '''
+        This code is repetitive - create a separate function to define the center
+        when refactoring.  Should be able to use one function to calculate
+        the Manhattan distance from current AND potential positions? Send in 
+        x, y coordinates and return - can use looped calls to populate a list for potential
+        moves reviewing.
+        '''
+        lowerLeft = (self.maze_dim/2-1, self.maze_dim/2-1)
+        upperLeft = (self.maze_dim/2-1, self.maze_dim/2)
+        lowerRight = (self.maze_dim/2, self.maze_dim/2-1)
+        upperRight = (self.maze_dim/2, self.maze_dim/2)
+        goal = [lowerLeft, upperLeft, lowerRight, upperRight]
+        distance = []
+        for corner in goal:
+            distance.append((np.absolute(self.location[0] - corner[0]) + np.absolute(self.location[1] - corner[1])))
+        currentDistance = min(distance) # Current min Manhattan distance to goal
+        return currentDistance
         
         
             
@@ -155,8 +174,9 @@ class Robot(object):
             location.append(self.location[i])
         
         orientation = []
-        for i in range(1):
-            orientation.append(self.orientation)
+        orientation.append(self.orientation)
+        #for i in range(1):
+            #orientation.append(self.orientation)
         
         print('TEST - Location is: %s' % location)
         for move in moves:
@@ -166,7 +186,7 @@ class Robot(object):
                 newOrientation = 0
             elif newOrientation == -90:
                 newOrientation = 270
-            print('TEST: New Orientation is: %s, move[0] is %s, move[1] is %s' %(newOrientation, move[0], move[1]))
+            #print('TEST: New Orientation is: %s, move[0] is %s, move[1] is %s' %(newOrientation, move[0], move[1]))
             
             # Need to fix this function - it's not giving a full (x,y) location right now
             # create the new location in one variable, then append it to a location list at the end of the ifs
@@ -186,7 +206,7 @@ class Robot(object):
             newLocationList.append(newLocation)
             visits.append(self.visited[x][y])
             #print(self.visited[newLocation[0]][newLocation[1]])
-        print('New locations: %s' % newLocationList)
-        print('Visits for potential move spots: %s' % visits)
+        #print('New locations: %s' % newLocationList)
+        #print('Visits for potential move spots: %s' % visits)
         moveIndex = visits.index(min(visits))
         return moveIndex
