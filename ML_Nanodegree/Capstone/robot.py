@@ -18,6 +18,8 @@ class Robot(object):
         self.visited = np.zeros((maze_dim, maze_dim))
         self.liveRun = 0
         self.liveMoves = 0
+        self.distances = np.zeros((maze_dim, maze_dim))
+        Robot.calcDistances(self)
 
     def next_move(self, sensors):
         '''
@@ -42,11 +44,16 @@ class Robot(object):
         print('Search move count is: %s' % self.move_count)
         print('Live run move count is: %s' % self.liveMoves)
         print('Location is: %s' % self.location)
+        x = self.location[0]
+        y = self.location[1]
+        #print('Distance to goal is: %s' % self.distances[x][y])
+        print('Distance to goal is: %s' % self.distances[self.location[0]][self.location[1]])
         print('Heading is: %s' % self.heading)
         print('Sensor readings (l, f, r) are: %s' % sensors)
         print('Visits grid:')
         self.visited[self.location[0]][self.location[1]] += 1
         print self.visited
+        print self.distances
         
         
         # Create various move functions - random move, minimum visits, A*
@@ -89,6 +96,25 @@ class Robot(object):
         
         return rotation, movement
         
+    def calcDistances(self):
+        lowerLeft = (self.maze_dim/2-1, self.maze_dim/2-1)
+        upperLeft = (self.maze_dim/2-1, self.maze_dim/2)
+        lowerRight = (self.maze_dim/2, self.maze_dim/2-1)
+        upperRight = (self.maze_dim/2, self.maze_dim/2)
+        goal = [lowerLeft, upperLeft, lowerRight, upperRight]
+        
+        for x in range(len(self.distances)):
+            for y in range(len(self.distances)):
+                distance = []        
+                for corner in goal:
+                    distance.append((np.absolute(x - corner[0]) + np.absolute(y - corner[1])))
+                self.distances[x][y] = min(distance)
+        #for corner in goal:
+            #distance.append((np.absolute(self.location[0] - corner[0]) + np.absolute(self.location[1] - corner[1])))
+        #currentDistance = min(distance) # Current min Manhattan distance to goal
+        return #currentDistance
+        
+    
     def validMoves(self, sensors):
         moves = []
         maxMove = 1
