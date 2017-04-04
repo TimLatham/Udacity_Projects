@@ -46,8 +46,8 @@ class Robot(object):
         print('Location is: %s' % self.location)
         x = self.location[0]
         y = self.location[1]
-        #print('Distance to goal is: %s' % self.distances[x][y])
-        print('Distance to goal is: %s' % self.distances[self.location[0]][self.location[1]])
+        print('Distance to goal is: %s' % self.distances[x][y])
+        #print('Distance to goal is: %s' % self.distances[self.location[0]][self.location[1]])
         print('Heading is: %s' % self.heading)
         print('Sensor readings (l, f, r) are: %s' % sensors)
         print('Visits grid:')
@@ -65,14 +65,25 @@ class Robot(object):
         print('Min visit move is: %s' % minVisitMove)
         print moves[minVisitMove]
         
+        minDistanceMove = Robot.minDistMove(self, moves, x, y)
+        print('Min distance move is: %s' % minDistanceMove)
+        print moves[minDistanceMove]
+        
+        if minVisitMove != minDistanceMove:
+            distVsVisit = minVisitMove
+        else:
+            distVsVisit = min(minVisitMove, minDistanceMove)
+        
         if Robot.goalFound(self) == True:
             rotation, movement = 'Reset', 'Reset'
         else:
             #moveSelector = random.randint(1, len(moves)) - 1
             #rotation = moves[moveSelector][0]
             #movement = moves[moveSelector][1]
-            rotation = moves[minVisitMove][0]
-            movement = moves[minVisitMove][1]
+            #rotation = moves[minVisitMove][0]
+            #movement = moves[minVisitMove][1]
+            rotation = moves[distVsVisit][0]
+            movement = moves[distVsVisit][1]
         
         if rotation != 'Reset':
             Robot.updateHeading(self, rotation)
@@ -91,8 +102,8 @@ class Robot(object):
             self.liveMoves += 1
                 
         print('Move chosen is rotation: %s, movement: %s' % (rotation, movement))
-        dist = Robot.manhattanDistance(self) 
-        print('Manhattan distance to goal is: %s' % dist)
+        #dist = Robot.manhattanDistance(self) 
+        #print('Manhattan distance to goal is: %s' % dist)
         
         return rotation, movement
         
@@ -109,11 +120,7 @@ class Robot(object):
                 for corner in goal:
                     distance.append((np.absolute(x - corner[0]) + np.absolute(y - corner[1])))
                 self.distances[x][y] = min(distance)
-        #for corner in goal:
-            #distance.append((np.absolute(self.location[0] - corner[0]) + np.absolute(self.location[1] - corner[1])))
-        #currentDistance = min(distance) # Current min Manhattan distance to goal
-        return #currentDistance
-        
+        return 
     
     def validMoves(self, sensors):
         moves = []
@@ -125,12 +132,37 @@ class Robot(object):
             moves.append((0, maxMove))
         if sensors[2]>0:
             moves.append((90, maxMove))
-        
         if sum(sensors) == 0:
             moves.append((-90, 0))
-        
         return moves
         
+    def minDistMove(self, moves, x, y):
+        newLocationList = []
+        distances = []
+        orientation = []
+        orientation.append(self.orientation)
+                
+        for move in moves:
+            newOrientation = orientation[0] + move[0]
+            if newOrientation == 360:
+                newOrientation = 0
+            elif newOrientation == -90:
+                newOrientation = 270
+            
+            if newOrientation == 0:
+                y += move[1]
+            elif newOrientation == 90:
+                x += move[1]
+            elif newOrientation == 180:
+                y -= move[1]
+            elif newOrientation == 270:
+                x -= move[1]
+            newLocation = (x, y)
+            newLocationList.append(newLocation)
+            distances.append(self.distances[x][y])
+        moveIndex = distances.index(min(distances))
+        return moveIndex
+    
     def updateHeading(self, rotation):
         direction = {0: 'up', 90: 'right', 180: 'down', 270: 'left'}
         #self.orientation = direction.keys()[direction.values().index(self.heading)]
@@ -158,7 +190,9 @@ class Robot(object):
         goal_bounds = [self.maze_dim/2 - 1, self.maze_dim/2]
         if self.location[0] in goal_bounds and self.location[1] in goal_bounds:
             return True
-
+    
+    '''
+    This code is no longer necessary - built a table in calcDistances instead
     def manhattanDistance(self):
         lowerLeft = (self.maze_dim/2-1, self.maze_dim/2-1)
         upperLeft = (self.maze_dim/2-1, self.maze_dim/2)
@@ -170,15 +204,15 @@ class Robot(object):
             distance.append((np.absolute(self.location[0] - corner[0]) + np.absolute(self.location[1] - corner[1])))
         currentDistance = min(distance) # Current min Manhattan distance to goal
         return currentDistance
-    
+        
     def manhattanDistanceMoves(self, moves):
-        '''
+        '
         This code is repetitive - create a separate function to define the center
         when refactoring.  Should be able to use one function to calculate
         the Manhattan distance from current AND potential positions? Send in 
         x, y coordinates and return - can use looped calls to populate a list for potential
         moves reviewing.
-        '''
+        '
         lowerLeft = (self.maze_dim/2-1, self.maze_dim/2-1)
         upperLeft = (self.maze_dim/2-1, self.maze_dim/2)
         lowerRight = (self.maze_dim/2, self.maze_dim/2-1)
@@ -189,7 +223,7 @@ class Robot(object):
             distance.append((np.absolute(self.location[0] - corner[0]) + np.absolute(self.location[1] - corner[1])))
         currentDistance = min(distance) # Current min Manhattan distance to goal
         return currentDistance
-        
+    '''    
         
             
     def minVisitMove(self, moves):
