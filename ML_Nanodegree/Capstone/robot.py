@@ -20,6 +20,7 @@ class Robot(object):
         self.liveMoves = 0
         self.distances = np.zeros((maze_dim, maze_dim))
         Robot.calcDistances(self)
+        self.positionValues = np.zeros((maze_dim, maze_dim)) # + self.distances
 
     def next_move(self, sensors):
         '''
@@ -51,39 +52,31 @@ class Robot(object):
         print('Heading is: %s' % self.heading)
         print('Sensor readings (l, f, r) are: %s' % sensors)
         print('Visits grid:')
+        
+        
+        #if self.liveRun == 0:
+            #self.visited[self.location[0]][self.location[1]] += 1
+            #self.positionValues = self.distances + self.visited        
+        
         self.visited[self.location[0]][self.location[1]] += 1
+        self.positionValues = self.distances + self.visited        
+        
+        
         print self.visited
-        print self.distances
-        
-        
-        # Create various move functions - random move, minimum visits, A*
+        print self.positionValues
         
         moves = Robot.validMoves(self, sensors)
         print('Valid moves are: %s' % moves)
-        
-        minVisitMove = Robot.minVisitMove(self, moves)
-        print('Min visit move is: %s' % minVisitMove)
-        print moves[minVisitMove]
         
         minDistanceMove = Robot.minDistMove(self, moves, x, y)
         print('Min distance move is: %s' % minDistanceMove)
         print moves[minDistanceMove]
         
-        if minVisitMove != minDistanceMove:
-            distVsVisit = minVisitMove
-        else:
-            distVsVisit = min(minVisitMove, minDistanceMove)
-        
         if Robot.goalFound(self) == True:
             rotation, movement = 'Reset', 'Reset'
         else:
-            #moveSelector = random.randint(1, len(moves)) - 1
-            #rotation = moves[moveSelector][0]
-            #movement = moves[moveSelector][1]
-            #rotation = moves[minVisitMove][0]
-            #movement = moves[minVisitMove][1]
-            rotation = moves[distVsVisit][0]
-            movement = moves[distVsVisit][1]
+            rotation = moves[minDistanceMove][0]
+            movement = moves[minDistanceMove][1]
         
         if rotation != 'Reset':
             Robot.updateHeading(self, rotation)
@@ -143,6 +136,7 @@ class Robot(object):
         orientation.append(self.orientation)
                 
         for move in moves:
+            newX, newY = x, y
             newOrientation = orientation[0] + move[0]
             if newOrientation == 360:
                 newOrientation = 0
@@ -150,16 +144,16 @@ class Robot(object):
                 newOrientation = 270
             
             if newOrientation == 0:
-                y += move[1]
+                newY += move[1]
             elif newOrientation == 90:
-                x += move[1]
+                newX += move[1]
             elif newOrientation == 180:
-                y -= move[1]
+                newY -= move[1]
             elif newOrientation == 270:
-                x -= move[1]
-            newLocation = (x, y)
+                newX -= move[1]
+            newLocation = (newX, newY)
             newLocationList.append(newLocation)
-            distances.append(self.distances[x][y])
+            distances.append(self.positionValues[newX][newY])
         moveIndex = distances.index(min(distances))
         return moveIndex
     
@@ -183,90 +177,9 @@ class Robot(object):
             self.location[1] -= movement
         elif self.orientation == 270:
             self.location[0] -= movement
-        #self.visited[self.location[0]][self.location[1]] += 1
         return
         
     def goalFound(self):
         goal_bounds = [self.maze_dim/2 - 1, self.maze_dim/2]
         if self.location[0] in goal_bounds and self.location[1] in goal_bounds:
             return True
-    
-    '''
-    This code is no longer necessary - built a table in calcDistances instead
-    def manhattanDistance(self):
-        lowerLeft = (self.maze_dim/2-1, self.maze_dim/2-1)
-        upperLeft = (self.maze_dim/2-1, self.maze_dim/2)
-        lowerRight = (self.maze_dim/2, self.maze_dim/2-1)
-        upperRight = (self.maze_dim/2, self.maze_dim/2)
-        goal = [lowerLeft, upperLeft, lowerRight, upperRight]
-        distance = []
-        for corner in goal:
-            distance.append((np.absolute(self.location[0] - corner[0]) + np.absolute(self.location[1] - corner[1])))
-        currentDistance = min(distance) # Current min Manhattan distance to goal
-        return currentDistance
-        
-    def manhattanDistanceMoves(self, moves):
-        '
-        This code is repetitive - create a separate function to define the center
-        when refactoring.  Should be able to use one function to calculate
-        the Manhattan distance from current AND potential positions? Send in 
-        x, y coordinates and return - can use looped calls to populate a list for potential
-        moves reviewing.
-        '
-        lowerLeft = (self.maze_dim/2-1, self.maze_dim/2-1)
-        upperLeft = (self.maze_dim/2-1, self.maze_dim/2)
-        lowerRight = (self.maze_dim/2, self.maze_dim/2-1)
-        upperRight = (self.maze_dim/2, self.maze_dim/2)
-        goal = [lowerLeft, upperLeft, lowerRight, upperRight]
-        distance = []
-        for corner in goal:
-            distance.append((np.absolute(self.location[0] - corner[0]) + np.absolute(self.location[1] - corner[1])))
-        currentDistance = min(distance) # Current min Manhattan distance to goal
-        return currentDistance
-    '''    
-        
-            
-    def minVisitMove(self, moves):
-        newLocationList = []
-        visits = []
-        location = []
-        for i in range(len(self.location)):
-            location.append(self.location[i])
-        
-        orientation = []
-        orientation.append(self.orientation)
-        #for i in range(1):
-            #orientation.append(self.orientation)
-        
-        print('TEST - Location is: %s' % location)
-        for move in moves:
-            x, y = location[0], location[1]
-            newOrientation = orientation[0] + move[0]
-            if newOrientation == 360:
-                newOrientation = 0
-            elif newOrientation == -90:
-                newOrientation = 270
-            #print('TEST: New Orientation is: %s, move[0] is %s, move[1] is %s' %(newOrientation, move[0], move[1]))
-            
-            # Need to fix this function - it's not giving a full (x,y) location right now
-            # create the new location in one variable, then append it to a location list at the end of the ifs
-            # then do code on that for the min
-            if newOrientation == 0:
-                y += move[1]
-                
-            elif newOrientation == 90:
-                x += move[1]
-                
-            elif newOrientation == 180:
-                y -= move[1]
-                
-            elif newOrientation == 270:
-                x -= move[1]
-            newLocation = (x, y)
-            newLocationList.append(newLocation)
-            visits.append(self.visited[x][y])
-            #print(self.visited[newLocation[0]][newLocation[1]])
-        #print('New locations: %s' % newLocationList)
-        #print('Visits for potential move spots: %s' % visits)
-        moveIndex = visits.index(min(visits))
-        return moveIndex
