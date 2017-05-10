@@ -35,7 +35,9 @@ loan_data = loan_data.drop(loan_data[(loan_data.home_ownership != 'RENT') & (loa
 #print(loan_data.collections_12_mths_ex_med.unique())
 loan_data = loan_data[pd.notnull(loan_data['collections_12_mths_ex_med'])]
 loan_data = loan_data[pd.notnull(loan_data['revol_util'])]
-'''loan_data = loan_data.drop(loan_data[(loan_data.revol_util > 150)])'''
+loan_data.ix[loan_data.revol_util > 150, 'revol_util'] = 150
+loan_data.ix[loan_data.open_acc > 30, 'open_acc'] = 30
+loan_data.ix[loan_data.pub_rec > 7, 'pub_rec'] = 7
 #print(loan_data.loan_status.unique())
 loan_data.ix[loan_data.loan_status == 'Charged Off', 'loan_status'] = 1
 loan_data.ix[loan_data.loan_status == 'Fully Paid', 'loan_status'] = 0
@@ -70,4 +72,4 @@ print (loan_data.head())
 print(float(len(loan_data)))
 
 #print(loan_data.dtypes)
-loan_data.to_csv('loan_data.csv')
+loan_data.to_csv('loan_data.csv', index=False)
