@@ -116,11 +116,33 @@ def train_predict(clf, X_train, y_train, X_test, y_test):
     print("F1 score for test set: {:.4f}.".format(predict_labels(clf, X_test, y_test)))
 
 
-from sklearn.ensemble import AdaBoostClassifier
-clf = AdaBoostClassifier(random_state=42, learning_rate=15)
+# GaussianNB
+print()
+print('GaussianNB - No Mods')
+from sklearn.naive_bayes import GaussianNB
+clf = GaussianNB()
 train_classifier(clf, X_train, y_train)
 predict_labels(clf, X_test, y_test)
 train_predict(clf, X_train, y_train, X_test, y_test)
+
+# RandomForest
+print()
+print('RandomForest - No Mods')
+from sklearn.ensemble import RandomForestClassifier
+clf = RandomForestClassifier(random_state=42)
+train_classifier(clf, X_train, y_train)
+predict_labels(clf, X_test, y_test)
+train_predict(clf, X_train, y_train, X_test, y_test)
+
+print()
+print('AdaBoostClassifier - No Mods')
+from sklearn.ensemble import AdaBoostClassifier
+clf = AdaBoostClassifier(random_state=42)
+train_classifier(clf, X_train, y_train)
+predict_labels(clf, X_test, y_test)
+train_predict(clf, X_train, y_train, X_test, y_test)
+
+
 
 
 '''
