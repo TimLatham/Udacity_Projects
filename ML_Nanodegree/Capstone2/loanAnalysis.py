@@ -116,6 +116,94 @@ def train_predict(clf, X_train, y_train, X_test, y_test):
     print("F1 score for test set: {:.4f}.".format(predict_labels(clf, X_test, y_test)))
 
 
+# from sklearn import model_A
+from sklearn.naive_bayes import GaussianNB
+# from sklearn import model_B
+from sklearn.ensemble import AdaBoostClassifier
+# from skearln import model_C
+from sklearn.ensemble import RandomForestClassifier
+
+# Initialize the three models
+clf_A = GaussianNB()
+clf_B = AdaBoostClassifier(random_state=42)
+clf_C = RandomForestClassifier(random_state=42)
+
+clf_list = [clf_A, clf_B, clf_C]
+
+# Execute the 'train_predict' function for each classifier
+# train_predict(clf, X_train, y_train, X_test, y_test)
+loop = [0, 1, 2]
+
+for i in range(0, 3):
+    clf = clf_list[i]
+    print('')
+    train_classifier(clf, X_train, y_train)
+    predict_labels(clf, X_test, y_test)
+    train_predict(clf, X_train, y_train, X_test, y_test)
+
+
+
+'''
+# Import 'GridSearchCV' and 'make_scorer'
+from sklearn.model_selection import GridSearchCV
+from sklearn.metrics import make_scorer
+
+# Create the parameters list you wish to tune
+parameters = {'learning_rate': [.01, .1, 1, 10, 100]}
+
+# Initialize the classifier
+clf = AdaBoostClassifier(random_state=42)
+
+# Make an f1 scoring function using 'make_scorer' 
+f1_scorer = make_scorer(f1_score, pos_label=1)
+
+# Perform grid search on the classifier using the f1_scorer as the scoring method
+grid_obj = GridSearchCV(estimator=clf, param_grid=parameters, scoring=f1_scorer, cv=10)
+
+# Fit the grid search object to the training data and find the optimal parameters
+grid_obj = grid_obj.fit(X_train, y_train)
+
+# Get the estimator
+clf = grid_obj.best_estimator_
+
+# Report the final F1 score for training and testing after parameter tuning
+print('')
+print("Tuned model has a training F1 score of {:.4f}.".format(predict_labels(clf, X_train, y_train)))
+print("Tuned model has a testing F1 score of {:.4f}.".format(predict_labels(clf, X_test, y_test)))
+
+
+from sklearn.ensemble import RandomForestClassifier
+clf = RandomForestClassifier(random_state=42)
+train_classifier(clf, X_train, y_train)
+predict_labels(clf, X_test, y_test)
+train_predict(clf, X_train, y_train, X_test, y_test)
+'''
+
+'''
+X_train_30000 = X_train[:30000]
+y_train_30000 = y_train[:30000]
+X_test_2000 = X_test[:2000]
+y_test_2000 = y_test[:2000]
+
+
+from sklearn.ensemble import RandomForestClassifier
+clf2 = RandomForestClassifier(random_state=42)
+train_classifier(clf2, X_train_30000, y_train_30000)
+predict_labels(clf2, X_test_2000, y_test_2000)
+train_predict(clf2, X_train_30000, y_train_30000, X_test_2000, y_test_2000)
+
+
+from sklearn.svm import SVC
+clf = SVC(random_state=42)
+train_classifier(clf, X_train_30000, y_train_30000)
+predict_labels(clf, X_test_2000, y_test_2000)
+train_predict(clf, X_train_30000, y_train_30000, X_test_2000, y_test_2000)
+
+
+
+    
+'''
+'''
 # GaussianNB
 print()
 print('GaussianNB - No Mods')
@@ -141,93 +229,4 @@ clf = AdaBoostClassifier(random_state=42)
 train_classifier(clf, X_train, y_train)
 predict_labels(clf, X_test, y_test)
 train_predict(clf, X_train, y_train, X_test, y_test)
-
-
-
-
-'''
-from sklearn.ensemble import RandomForestClassifier
-clf = RandomForestClassifier(random_state=42)
-train_classifier(clf, X_train, y_train)
-predict_labels(clf, X_test, y_test)
-train_predict(clf, X_train, y_train, X_test, y_test)
-
-
-# Import 'GridSearchCV' and 'make_scorer'
-from sklearn.model_selection import GridSearchCV
-from sklearn.metrics import make_scorer
-
-# Create the parameters list you wish to tune
-parameters = {'min_samples_split': [3, 5, 100, 1000]}
-
-# Initialize the classifier
-clf = RandomForestClassifier(random_state=42)
-
-# Make an f1 scoring function using 'make_scorer' 
-f1_scorer = make_scorer(f1_score, pos_label=1)
-
-# Perform grid search on the classifier using the f1_scorer as the scoring method
-grid_obj = GridSearchCV(estimator=clf, param_grid=parameters, scoring=f1_scorer, cv=10)
-
-# Fit the grid search object to the training data and find the optimal parameters
-grid_obj = grid_obj.fit(X_train, y_train)
-
-# Get the estimator
-clf = grid_obj.best_estimator_
-
-# Report the final F1 score for training and testing after parameter tuning
-print('')
-print("Tuned model has a training F1 score of {:.4f}.".format(predict_labels(clf, X_train, y_train)))
-print("Tuned model has a testing F1 score of {:.4f}.".format(predict_labels(clf, X_test, y_test)))
-'''
-
-
-
-'''
-X_train_30000 = X_train[:30000]
-y_train_30000 = y_train[:30000]
-X_test_2000 = X_test[:2000]
-y_test_2000 = y_test[:2000]
-
-
-from sklearn.ensemble import RandomForestClassifier
-clf2 = RandomForestClassifier(random_state=42)
-train_classifier(clf2, X_train_30000, y_train_30000)
-predict_labels(clf2, X_test_2000, y_test_2000)
-train_predict(clf2, X_train_30000, y_train_30000, X_test_2000, y_test_2000)
-
-
-from sklearn.svm import SVC
-clf = SVC(random_state=42)
-train_classifier(clf, X_train_30000, y_train_30000)
-predict_labels(clf, X_test_2000, y_test_2000)
-train_predict(clf, X_train_30000, y_train_30000, X_test_2000, y_test_2000)
-
-
-# from sklearn import model_A
-from sklearn.svm import SVC
-# from sklearn import model_B
-from sklearn.ensemble import AdaBoostClassifier
-# from skearln import model_C
-from sklearn.ensemble import RandomForestClassifier
-
-
-# Initialize the three models
-clf_A = SVC(random_state=42)
-clf_B = AdaBoostClassifier(random_state=42)
-clf_C = RandomForestClassifier(random_state=42)
-
-clf_list = [clf_A, clf_B, clf_C]
-
-# Execute the 'train_predict' function for each classifier
-# train_predict(clf, X_train, y_train, X_test, y_test)
-loop = [0, 1, 2]
-
-for i in range(0, 3):
-    clf = clf_list[i]
-    print('')
-    train_classifier(clf, X_train, y_train)
-    predict_labels(clf, X_test, y_test)
-    train_predict(clf, X_train, y_train, X_test, y_test)
-    
 '''
