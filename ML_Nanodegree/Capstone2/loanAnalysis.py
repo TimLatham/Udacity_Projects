@@ -122,19 +122,22 @@ from sklearn.naive_bayes import GaussianNB
 from sklearn.ensemble import AdaBoostClassifier
 # from skearln import model_C
 from sklearn.ensemble import RandomForestClassifier
+# from skearln import model_D
+from sklearn.neural_network import MLPClassifier
 
-# Initialize the three models
+# Initialize the models
 clf_A = GaussianNB()
 clf_B = AdaBoostClassifier(random_state=42)
 clf_C = RandomForestClassifier(random_state=42)
+clf_D = MLPClassifier(random_state=42, activation='identity')
 
-clf_list = [clf_A, clf_B, clf_C]
+clf_list = [clf_A, clf_B, clf_C, clf_D]
 
 # Execute the 'train_predict' function for each classifier
 # train_predict(clf, X_train, y_train, X_test, y_test)
-loop = [0, 1, 2]
+loop = [0, 1, 2, 3]
 
-for i in range(0, 3):
+for i in range(len(clf_list)):
     clf = clf_list[i]
     print('')
     train_classifier(clf, X_train, y_train)
@@ -149,10 +152,10 @@ from sklearn.model_selection import GridSearchCV
 from sklearn.metrics import make_scorer
 
 # Create the parameters list you wish to tune
-parameters = {'learning_rate': [.01, .1, 1, 10, 100]}
+parameters = {'activation': ['identity', 'logistic', 'tanh']}
 
 # Initialize the classifier
-clf = AdaBoostClassifier(random_state=42)
+clf = MLPClassifier(random_state=42)
 
 # Make an f1 scoring function using 'make_scorer' 
 f1_scorer = make_scorer(f1_score, pos_label=1)
@@ -177,9 +180,9 @@ clf = RandomForestClassifier(random_state=42)
 train_classifier(clf, X_train, y_train)
 predict_labels(clf, X_test, y_test)
 train_predict(clf, X_train, y_train, X_test, y_test)
-'''
 
-'''
+
+
 X_train_30000 = X_train[:30000]
 y_train_30000 = y_train[:30000]
 X_test_2000 = X_test[:2000]
