@@ -39,8 +39,8 @@ loan_data.ix[loan_data.revol_util > 150, 'revol_util'] = 150
 loan_data.ix[loan_data.open_acc > 30, 'open_acc'] = 30
 loan_data.ix[loan_data.pub_rec > 7, 'pub_rec'] = 7
 #print(loan_data.loan_status.unique())
-loan_data.ix[loan_data.loan_status == 'Charged Off', 'loan_status'] = 1
-loan_data.ix[loan_data.loan_status == 'Fully Paid', 'loan_status'] = 0
+loan_data.ix[loan_data.loan_status == 'Charged Off', 'loan_status'] = 0
+loan_data.ix[loan_data.loan_status == 'Fully Paid', 'loan_status'] = 1
 #print(loan_data.loan_status.unique())
 #print(loan_data.term.unique())
 loan_data.ix[loan_data.term == ' 60 months', 'term'] = 1
