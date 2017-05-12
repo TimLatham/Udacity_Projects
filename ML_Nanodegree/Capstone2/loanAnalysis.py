@@ -130,12 +130,13 @@ clf_A = GaussianNB()
 clf_B = AdaBoostClassifier(random_state=42)
 clf_C = RandomForestClassifier(random_state=42)
 clf_D = MLPClassifier(random_state=42, activation='identity')
+clf_E = RandomForestClassifier(random_state=42, max_depth=10)
 
-clf_list = [clf_A, clf_B, clf_C, clf_D]
+clf_list = [clf_A, clf_B, clf_C, clf_D, clf_E]
 
 # Execute the 'train_predict' function for each classifier
 # train_predict(clf, X_train, y_train, X_test, y_test)
-loop = [0, 1, 2, 3]
+#loop = [0, 1, 2, 3]
 
 for i in range(len(clf_list)):
     clf = clf_list[i]
