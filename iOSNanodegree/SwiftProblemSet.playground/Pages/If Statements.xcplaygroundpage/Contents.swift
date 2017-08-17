@@ -70,6 +70,16 @@ func release() {
 func checkForRelease(bugs: Int, music: Bool, levels: Int) {
     if bugs < 10 && music && levels > 5 {
         release()
+    } else {
+        if bugs >= 10 {
+            print("You have too many bugs. \(bugs) is more than the maximum of 9 bugs")
+        }
+        if !hasMusic {
+            print("You need to add music.")
+        }
+        if numberOfLevels <= 5 {
+            print("You need to add more levels. \(numberOfLevels) is less than the minimum of 6 levels.")
+        }
     }
 }
 
